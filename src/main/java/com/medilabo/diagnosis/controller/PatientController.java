@@ -16,55 +16,75 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    // liste de tous les patients
-    @GetMapping("")
+    //html : fetch get
+    @GetMapping
     public List<Patient> getAllPatient() {
 
         logger.info("Requete pour obtenir la liste de tous les patients");
 
-        return patientService.getAllPatient();    //retour d'un objet json implicite par utilisation de annotation @Restcontroller
+        List<Patient> patients = patientService.getAllPatient();
+        return patients;
     }
 
-    // Data d'un patient particulier
-    @GetMapping("/{id}")
-    public Patient getSinglePatient(@PathVariable("id") Long patientId) {
+    // Update d'un patient - persistence
+    //html : fetch post
+    //mettre validation not null pour tt sauf address et phone number
 
-        logger.info("Requete pour la consultation des informations d'un patient");
-
-        return patientService.getSinglePatient(patientId);    //retour d'un objet json implicite par annotation @RestController
-    }
-
-    // Ajout d'un patient
-    @PostMapping("")
-    public void addPatient(@RequestBody Patient patientToAdd) {
-
-        logger.info("Requete pour l'ajout d'un nouveau patient");
-
-        patientService.add(patientToAdd);
-
-//        if (result.hasErrors()) {
-//        return "bidList/add";
-//    } else {
-//        bidListService.add(bidList);
-//    }
-//    return "redirect:/bidList/list";
-    }
-
-    // Update d'un patient
-    @PutMapping("")
-    public void updatePatient(@RequestBody Patient patientToUpdate) {
+    //objet doit etre dans body
+    //ajouter id en pathvariable
+    @PutMapping("")//{id}
+    public void updatePatient (@RequestBody Patient patientToUpdate){
 
         logger.info("Requete pour la mise à jour des informations d'un patient");
 
         patientService.updatePatient(patientToUpdate);
     }
 
-    // Suppression d'un patient
-    @DeleteMapping("/{id}")
-    public void deletePatient(@PathVariable("id") Long id) {
+//    public ModelAndView showPatientList(ModelAndView modelAndView) {
+//
+//        logger.info("Requete pour obtenir la page testFetch complète");
+//
+//         modelAndView.setViewName("/patient/index");
+//         return modelAndView;
 
-        logger.info("Requete pour la suppression d'un patient");
+    // Ajout d'un patient - affichage formulaire
+    //comment juste renvoyer une vue - pareil pour endpoint update patient form : renvoi string vue OU Objet patient
+//    @GetMapping("/add")
+//    public String showPatientAddForm()  {
+//
+//        logger.info("Requete pour l'affichage du formulaire d'ajout d'un patient");
+//
+//        //retourner vue du formulaire add patient
+//        return "patient/add";
+//    }
 
-        patientService.deletePatient(id);
-    }
+    // Ajout d'un patient - persistence
+//    @PostMapping("")
+//    public void addPatient(@RequestBody Patient patientToAdd) {
+//
+//        logger.info("Requete pour l'ajout d'un nouveau patient");
+//
+//        patientService.add(patientToAdd);
+
+//synthaxe avec validation sur parametres d'entree
+//        if (result.hasErrors()) {
+//        return "bidList/add";
+//    } else {
+//        bidListService.add(bidList);
+//    }
+//    return "redirect:/bidList/list";
+//}
+
+// Update d'un patient - affichage form
+//comment juste renvoyer une vue - pareil pour endpoint update patient form
+//    @GetMapping("/{id}")
+//    public Patient showPatientUpdateForm(@PathVariable("id") Long id) {
+//
+//        logger.info("Requete pour l'affichage du formulaire d'update d'un patient");
+//
+//        Patient patientToShow = patientService.getSinglePatient(id);
+//        return patientToShow;
+//    }
+
+
 }

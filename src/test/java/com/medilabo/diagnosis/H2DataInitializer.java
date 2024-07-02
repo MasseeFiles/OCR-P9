@@ -15,7 +15,7 @@ public class H2DataInitializer {
         PatientRepository patientRepository;
 
         @Bean
-        public H2DataInitializer DataInitializer() {
+        public H2DataInitializer dataInitializer() {
 
             Patient[] patients = new Patient[4];
             patients[0] = new Patient(1L, "Test", "TestNone", LocalDate.of(1966,12,31), "F", "AA", "AA");

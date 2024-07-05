@@ -44,9 +44,11 @@ public class PatientControllerTests {
 
         when(patientService.getAllPatient()).thenReturn(patientListTest);
 
+        //WHEN
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/patient")
                 )
+        //THEN
                 .andExpect(MockMvcResultMatchers
                         .status().isOk())
                 .andExpect(jsonPath("$.size()").value(4));
@@ -65,7 +67,7 @@ public class PatientControllerTests {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/patient/{id}", idTest)
                 )
-                //THEN
+        //THEN
                 .andExpect(MockMvcResultMatchers
                         .status().isOk())
                 .andExpect(jsonPath("$.patientId").value(patientTest.getPatientId()))
@@ -74,7 +76,7 @@ public class PatientControllerTests {
     }
 
     @Test
-    void updatePatient_ShouldUseMethodUpdatePatient() throws Exception {
+    void updatePatient_Ok() throws Exception {
         //GIVEN
         Patient patientToUpdateTest = new Patient(1L, "Test", "TestNone", LocalDate.of(1966, 12, 31), "F", "AA", "AA");
         ObjectMapper mapper = new ObjectMapper();
@@ -88,15 +90,15 @@ public class PatientControllerTests {
                         .put("/patient/{id}", idTest)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonString))
+        //THEN
                 .andExpect(MockMvcResultMatchers
                         .status().isOk());
 
-        //THEN
         Mockito.verify(patientService).updatePatient(patientToUpdateTest);
     }
 
     @Test
-    void updatePatient_ShouldReturnException() throws Exception {
+    void updatePatient_IdsMismatching() throws Exception {
         //GIVEN
         Patient patientToUpdateTest = new Patient(4L, "Test", "TestNone", LocalDate.of(1966, 12, 31), "F", "AA", "AA");
         ObjectMapper mapper = new ObjectMapper();
@@ -114,5 +116,27 @@ public class PatientControllerTests {
         })
                 .isInstanceOf(ServletException.class)
                 .hasMessageContaining("Id passed in PathVariable ( " + idTest + " doesn't match Id passed in RequestBody (" + patientToUpdateTest.getPatientId());
+    }
+
+    @Test
+    void updatePatient_DataValidationNotOk() throws Exception {
+        //GIVEN
+        Patient patientToUpdateTest = new Patient(1L, "newFirstName", "newLastName", LocalDate.of(1966, 12, 31), "M", "AA", "AA");
+        patientToUpdateTest.setFirstName(null);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+        String jsonString = mapper.writeValueAsString(patientToUpdateTest);
+
+        Long idTest = 1L;
+
+        //THEN
+        assertThatThrownBy(() -> {
+            mockMvc.perform(MockMvcRequestBuilders
+                    .put("/patient/{id}", idTest)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(jsonString));
+        })
+                .isInstanceOf(ServletException.class)
+                .hasMessageContaining("Request can't be handled, some patient data are missing");
     }
 }

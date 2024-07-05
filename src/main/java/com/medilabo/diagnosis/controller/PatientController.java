@@ -5,9 +5,11 @@ import com.medilabo.diagnosis.services.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletException;
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,13 +44,21 @@ public class PatientController {
     //mettre validation not null pour tt sauf address et phone number
 
     @PutMapping("/{id}")
-    @Operation(summary = "Mise à jour des données d'un patient", description = "Persiste en base les données actualisées d'un patient")
-    public void updatePatient(@PathVariable("id") Long id, @RequestBody Patient patientToUpdate) throws Exception {
+    @Operation(summary = "Mise à jour des donnes d'un patient", description = "Persiste en base les données actualisées d'un patient")
+    public void updatePatient(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid Patient patientToUpdate,
+            BindingResult result
+            ) throws Exception {
 
         logger.info("Requete pour la mise à jour des informations d'un patient");
 
         if (id.equals(patientToUpdate.getPatientId())) {
-            patientService.updatePatient(patientToUpdate);
+            if (result.hasErrors()) {
+                throw new ServletException("Request can't be handled, some patient data are missing");
+            } else {
+                patientService.updatePatient(patientToUpdate);
+            }
         } else {
             throw new ServletException("Id passed in PathVariable ( " + id + " doesn't match Id passed in RequestBody (" + patientToUpdate.getPatientId());
         }

@@ -53,14 +53,10 @@ public class PatientController {
 
         logger.info("Requete pour la mise à jour des informations d'un patient");
 
-        if (id.equals(patientToUpdate.getPatientId())) {
             if (result.hasErrors()) {
-                throw new ServletException("Request can't be handled, some patient data are missing");
+                throw new ServletException("Request can't be handled, some patient data are missing or don't have the required format");
             } else {
                 patientService.updatePatient(patientToUpdate);
             }
-        } else {
-            throw new ServletException("Id passed in PathVariable ( " + id + " doesn't match Id passed in RequestBody (" + patientToUpdate.getPatientId());
-        }
     }
 }

@@ -98,27 +98,6 @@ public class PatientControllerTests {
     }
 
     @Test
-    void updatePatient_IdsMismatching() throws Exception {
-        //GIVEN
-        Patient patientToUpdateTest = new Patient(4L, "Test", "TestNone", LocalDate.of(1966, 12, 31), "F", "AA", "AA");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.findAndRegisterModules();
-        String jsonString = mapper.writeValueAsString(patientToUpdateTest);
-
-        Long idTest = 1L;
-
-        //THEN
-        assertThatThrownBy(() -> {
-            mockMvc.perform(MockMvcRequestBuilders
-                    .put("/patient/{id}", idTest)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(jsonString));
-        })
-                .isInstanceOf(ServletException.class)
-                .hasMessageContaining("Id passed in PathVariable ( " + idTest + " doesn't match Id passed in RequestBody (" + patientToUpdateTest.getPatientId());
-    }
-
-    @Test
     void updatePatient_DataValidationNotOk() throws Exception {
         //GIVEN
         Patient patientToUpdateTest = new Patient(1L, "newFirstName", "newLastName", LocalDate.of(1966, 12, 31), "M", "AA", "AA");
@@ -137,6 +116,6 @@ public class PatientControllerTests {
                     .content(jsonString));
         })
                 .isInstanceOf(ServletException.class)
-                .hasMessageContaining("Request can't be handled, some patient data are missing");
+                .hasMessageContaining("Request can't be handled, some patient data are missing or don't have the required format");
     }
 }

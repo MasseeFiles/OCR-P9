@@ -1,7 +1,7 @@
 package com.medilabo.diagnosis.controller;
 
 import com.medilabo.diagnosis.model.Patient;
-import com.medilabo.diagnosis.services.PatientService;
+import com.medilabo.diagnosis.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletException;
@@ -22,7 +22,7 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    @GetMapping
+    @GetMapping("")
     @Operation(summary = "Recuperation des données de tous les patients", description = "Retourne une List<Patient>")
     public List<Patient> getAllPatient() {
 
@@ -41,10 +41,8 @@ public class PatientController {
         return patientService.getSinglePatient(patientId);
     }
 
-    //mettre validation not null pour tt sauf address et phone number
-
     @PutMapping("/{id}")
-    @Operation(summary = "Mise à jour des donnes d'un patient", description = "Persiste en base les données actualisées d'un patient")
+    @Operation(summary = "Mise à jour des donnees d'un patient", description = "Persiste en base les données actualisées d'un patient")
     public void updatePatient(
             @PathVariable("id") Long id,
             @RequestBody @Valid Patient patientToUpdate,

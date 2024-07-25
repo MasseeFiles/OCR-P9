@@ -2,7 +2,7 @@ package com.medilabo.diagnosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medilabo.diagnosis.model.Patient;
-import com.medilabo.diagnosis.services.PatientService;
+import com.medilabo.diagnosis.service.PatientService;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -28,7 +28,7 @@ public class PatientControllerTests {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private PatientService patientService;
+    private PatientService mockPatientService;
 
     @Test
 //        @WithMockUser(username = "userEmail1")
@@ -42,7 +42,7 @@ public class PatientControllerTests {
 
         List<Patient> patientListTest = new ArrayList<>((Arrays.asList(patientArray)));
 
-        when(patientService.getAllPatient()).thenReturn(patientListTest);
+        when(mockPatientService.getAllPatient()).thenReturn(patientListTest);
 
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders
@@ -59,7 +59,7 @@ public class PatientControllerTests {
     void getSinglePatient_ShouldReturnJson() throws Exception {
         //GIVEN
         Patient patientTest = new Patient(1L, "Test", "TestNone", LocalDate.of(1966, 12, 31), "F", "AA", "AA");
-        when(patientService.getSinglePatient(1L)).thenReturn(patientTest);
+        when(mockPatientService.getSinglePatient(1L)).thenReturn(patientTest);
 
         Long idTest = 1L;
 
@@ -80,7 +80,7 @@ public class PatientControllerTests {
         //GIVEN
         Patient patientToUpdateTest = new Patient(1L, "Test", "TestNone", LocalDate.of(1966, 12, 31), "F", "AA", "AA");
         ObjectMapper mapper = new ObjectMapper();
-        mapper.findAndRegisterModules();
+        mapper.findAndRegisterModules();    //utilisé pour mapper LocalDates
         String jsonString = mapper.writeValueAsString(patientToUpdateTest); //passage de patientToUpdateTest au format Json dans le Body, pas avec param
 
         Long idTest = 1L;
@@ -94,7 +94,7 @@ public class PatientControllerTests {
                 .andExpect(MockMvcResultMatchers
                         .status().isOk());
 
-        Mockito.verify(patientService).updatePatient(patientToUpdateTest);
+        Mockito.verify(mockPatientService).updatePatient(patientToUpdateTest);
     }
 
     @Test

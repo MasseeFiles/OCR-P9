@@ -1,7 +1,7 @@
 package com.medilabo.diagnosis.configuration;
 
 import com.medilabo.diagnosis.model.Patient;
-import com.medilabo.diagnosis.repositories.PatientRepository;
+import com.medilabo.diagnosis.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ public class DataInit {
     PatientRepository patientRepository;
 
     @Bean
-    public DataInit ataInit() {
+    public DataInit init() {
 
         Patient[] patients = new Patient[4];
         patients[0] = new Patient(1L, "Test", "TestNone", LocalDate.of(1966, 12, 31), "F", "AA", "AA");

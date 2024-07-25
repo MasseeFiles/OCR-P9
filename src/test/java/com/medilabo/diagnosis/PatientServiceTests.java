@@ -1,8 +1,8 @@
 package com.medilabo.diagnosis;
 
 import com.medilabo.diagnosis.model.Patient;
-import com.medilabo.diagnosis.repositories.PatientRepository;
-import com.medilabo.diagnosis.services.PatientService;
+import com.medilabo.diagnosis.repository.PatientRepository;
+import com.medilabo.diagnosis.service.PatientService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

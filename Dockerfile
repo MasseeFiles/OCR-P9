@@ -1,4 +1,4 @@
-##################### COUCHE JAVA ####################
+##################### DOCKERFILE diagnosis_patient ####################
 
 #################### STAGE 1 : Construction du projet ##########################
 
@@ -13,7 +13,7 @@ COPY pom.xml /diagnosis
 COPY src /diagnosis/src
 
 # Copier le fichier application.properties dans l'image
-#COPY src/main/resources/application.properties /diagnosis
+COPY src/main/resources/application.properties /diagnosis
 
 # Package de l'appli (sans execution des tests - DskipTests)
 RUN mvn clean package -DskipTests
@@ -29,7 +29,7 @@ WORKDIR /diagnosis
 COPY --from=build /diagnosis/target/diagnosis-0.0.1-SNAPSHOT.jar diagnosis.jar
 
 # Exposition du port d'accès à l'appli
-EXPOSE 8080
+EXPOSE 8081
 
 #RUN de l'appli (par defaut au demarrage du container)
 ENTRYPOINT ["java", "-Dspring.config.location=classpath:/application.properties", "-jar", "diagnosis.jar"]

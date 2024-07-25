@@ -1,40 +1,67 @@
 version: '3.7'
 
+networks:
+    diagnosis_network:
+
 services:
     database:
         image: mysql:5.7
+        networks:
+            - diagnosis_network
         container_name: mysql_container
         restart: always
         volumes:
             - db-volume:/var/lib/mysql
-            - ./articles.sql:/docker-entrypoint-initdb.d/articles.sql
+            - ./articles.sql:/docker-entrypoint-initdb.d/articles.sql #a utiliser pour executer script sql et remplir base
         environment:
             MYSQL_ROOT_PASSWORD: test
             MYSQL_DATABASE: test
             MYSQL_USER: test
-            MYSQL_PASSWORD: 
+            MYSQL_PASSWORD:
+#            DB_URI: "mysql://host.docker.internal:3306/p9_bdd"
+#            DB_URI: "mysql://localhost:3306/p9_bdd"
 
-    app:
+        ports:
+            - "3310:3306"     # Exposition du  port 3306 du container vers port 3307 de la host machine
+
+    diagnosis_patient:
         image: diagnosis
+        networks:
+            - diagnosis_network
         container_name: diagnosis_api
         restart: always
         volumes:
             - ./diagnosis:/var/www/html
         ports:
-            - "8080:8080"
+            - "8081:8081"
         depends_on:
             - database
 
-    view:
-        image: diagnosisView
+    diagnosis_view:
+        image: diagnosisview
+        networks:
+            - diagnosis_network
         container_name: diagnosis_view
         restart: always
         volumes:
             - ./diagnosis:/var/www/html
         ports:
-            - 8082:82
+            - "8082:8082"
         depends_on:
             - app
+
+#    diagnosis_gateway:
+#        image: diagnosis_gateway
+#        networks:
+#            - diagnosis_network
+#        container_name: diagnosis_gateway
+#        restart: always
+#        volumes:
+#            - ./diagnosis:/var/www/html
+#        ports:
+#            - "8084:8084"
+#        depends_on:
+#            - app
 
 volumes:
     db-volume:

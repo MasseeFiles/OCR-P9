@@ -28,9 +28,10 @@ public class Patient {
         private LocalDate dateOfBirth;
 
         @NotBlank
-        private String genre;
+        private String gender;
 
         private String address;
 
         private String phoneNumber;
+
 }

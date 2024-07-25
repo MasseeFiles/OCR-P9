@@ -1,7 +1,7 @@
-package com.medilabo.diagnosis.services;
+package com.medilabo.diagnosis.service;
 
 import com.medilabo.diagnosis.model.Patient;
-import com.medilabo.diagnosis.repositories.PatientRepository;
+import com.medilabo.diagnosis.repository.PatientRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

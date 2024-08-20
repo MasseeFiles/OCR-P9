@@ -4,25 +4,45 @@ networks:
     diagnosis_network:
 
 services:
-    database:
-        image: mysql:5.7
-        networks:
-            - diagnosis_network
-        container_name: mysql_container
-        restart: always
-        volumes:
-            - db-volume:/var/lib/mysql
-            - ./articles.sql:/docker-entrypoint-initdb.d/articles.sql #a utiliser pour executer script sql et remplir base
-        environment:
-            MYSQL_ROOT_PASSWORD: test
-            MYSQL_DATABASE: test
-            MYSQL_USER: test
-            MYSQL_PASSWORD:
-#            DB_URI: "mysql://host.docker.internal:3306/p9_bdd"
+#    sql_database:
+#        image: mysql:5.7
+#        networks:
+#            - diagnosis_network
+#        container_name: mysql_container
+#        restart: always
+#
+##Commentaire sur volume:
+#    #db-volume:/var/lib/mysql: Mounts a named volume db-volume to persist database data.
+##./articles.sql:/docker-entrypoint-initdb.d/articles.sql: Mounts a local SQL file to initialize the database with predefined data.
+#        volumes:
+#            - db-volume:/var/lib/mysql
+#            - ./articles.sql:/docker-entrypoint-initdb.d/articles.sql           #a utiliser pour executer script sql et remplir base
+#
+#        environment:
+#            MYSQL_ROOT_PASSWORD: test
+#            MYSQL_DATABASE: test
+#            MYSQL_USER: test
+#            MYSQL_PASSWORD:
+##            DB_URI: "mysql://host.docker.internal:3306/p9_bdd"
 #            DB_URI: "mysql://localhost:3306/p9_bdd"
-
-        ports:
-            - "3310:3306"     # Exposition du  port 3306 du container vers port 3307 de la host machine
+#
+#        ports:
+#            - "3306:3306"     # Exposition du  port 3306 du container vers port 3307 de la host machine
+#
+#    mongo_database:
+#      image: mongo:latest
+#      networks:
+#        - diagnosis_network
+#      container_name: mongodb_container
+#      restart: always
+#      volumes:
+#        - mongo-data:/data/db
+#      environment:
+#        MONGO_INITDB_ROOT_USERNAME: root
+#        MONGO_INITDB_ROOT_PASSWORD: example
+#        MONGO_INITDB_DATABASE: diagnosis_db
+#      ports:
+#        - "27017:27017"  # Expose MongoDB on default port
 
     diagnosis_patient:
         image: diagnosis
@@ -34,8 +54,13 @@ services:
             - ./diagnosis:/var/www/html
         ports:
             - "8081:8081"
-        depends_on:
-            - database
+        environment:
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_PORT: 3306
+          MYSQL_DATABASE: p9_bdd
+#          MYSQL_USER: root
+#          MYSQL_PASSWORD:
+
 
     diagnosis_view:
         image: diagnosisview
@@ -47,21 +72,53 @@ services:
             - ./diagnosis:/var/www/html
         ports:
             - "8082:8082"
-        depends_on:
-            - app
+#        depends_on:
+#            - diagnosis_patient
 
-#    diagnosis_gateway:
-#        image: diagnosis_gateway
+    diagnosis_gateway:
+        image: diagnosis_gateway
+        networks:
+            - diagnosis_network
+        container_name: diagnosis_gateway
+        restart: always
+        volumes:
+            - ./diagnosis:/var/www/html
+        ports:
+            - "8084:8084"
+#        depends_on:
+#            - diagnosis_patient
+
+    diagnosis_risk:
+        image: diagnosis_risk
+        networks:
+            - diagnosis_network
+        container_name: diagnosis_risk
+        restart: always
+        volumes:
+            - ./diagnosis:/var/www/html
+        ports:
+            - "8085:8085"
+#        depends_on:
+#            - diagnosis_patient
+
+#    diagnosis_note:
+#        image: diagnosis_note
 #        networks:
 #            - diagnosis_network
-#        container_name: diagnosis_gateway
+#        container_name: diagnosis_note
 #        restart: always
 #        volumes:
 #            - ./diagnosis:/var/www/html
 #        ports:
-#            - "8084:8084"
+#            - "8083:8083"
 #        depends_on:
-#            - app
+#            - diagnosis_patient
+#        environment:
+#          MONGO_HOST: 127.0.0.1
+#          MONGO_PORT: 27017
+#          MONGO_DB: p9_noSQL_DB
+##          MONGO_USER:
+##          MONGO_PASSWORD:
 
 volumes:
-    db-volume:
+  db-volume:

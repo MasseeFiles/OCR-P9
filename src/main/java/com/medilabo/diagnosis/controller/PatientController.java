@@ -1,5 +1,6 @@
 package com.medilabo.diagnosis.controller;
 
+
 import com.medilabo.diagnosis.model.Patient;
 import com.medilabo.diagnosis.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,7 +50,7 @@ public class PatientController {
             BindingResult result
             ) throws Exception {
 
-        logger.info("Requete pour la mise à jour des informations d'un patient");
+        logger.info("Requete pour la persistence des informations d'un patient");
 
             if (result.hasErrors()) {
                 throw new ServletException("Request can't be handled, some patient data are missing or don't have the required format");

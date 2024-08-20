@@ -22,6 +22,7 @@ public class PatientService {
     public Patient getSinglePatient(Long id) {
         return patientRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found : Id used " + id));
+
     }
 
     public void updatePatient(Patient patient) {

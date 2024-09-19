@@ -1,4 +1,4 @@
-package com.medilabo.diagnosis.model;
+package com.medilabo.diagnosis_patients.model;
 
 import jakarta.persistence.*;
 
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Patient {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long patientId;         // pour les id, mettre plutot parametre en long plutot que integer (plafond max)
+        private Long patientId;
 
         @NotBlank
         private String firstName;

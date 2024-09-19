@@ -1,8 +1,8 @@
-package com.medilabo.diagnosis;
+package com.medilabo.diagnosis_patients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.medilabo.diagnosis.model.Patient;
-import com.medilabo.diagnosis.service.PatientService;
+import com.medilabo.diagnosis_patients.model.Patient;
+import com.medilabo.diagnosis_patients.service.PatientService;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -25,13 +25,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 public class PatientControllerTests {
+
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private PatientService mockPatientService;
 
     @Test
-//        @WithMockUser(username = "userEmail1")
     void getAllPatient_ShouldReturnJson() throws Exception {
         //GIVEN
         Patient[] patientArray = new Patient[4];
@@ -46,7 +47,7 @@ public class PatientControllerTests {
 
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/patient")
+                        .get("/patientService")
                 )
         //THEN
                 .andExpect(MockMvcResultMatchers
@@ -55,7 +56,6 @@ public class PatientControllerTests {
     }
 
     @Test
-//        @WithMockUser(username = "userEmail1")
     void getSinglePatient_ShouldReturnJson() throws Exception {
         //GIVEN
         Patient patientTest = new Patient(1L, "Test", "TestNone", LocalDate.of(1966, 12, 31), "F", "AA", "AA");
@@ -65,7 +65,7 @@ public class PatientControllerTests {
 
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/patient/{id}", idTest)
+                        .get("/patientService/{id}", idTest)
                 )
         //THEN
                 .andExpect(MockMvcResultMatchers
@@ -87,7 +87,7 @@ public class PatientControllerTests {
 
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/patient/{id}", idTest)
+                        .put("/patientService/{id}", idTest)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonString))
         //THEN
@@ -111,11 +111,12 @@ public class PatientControllerTests {
         //THEN
         assertThatThrownBy(() -> {
             mockMvc.perform(MockMvcRequestBuilders
-                    .put("/patient/{id}", idTest)
+                    .put("/patientService/{id}", idTest)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(jsonString));
         })
                 .isInstanceOf(ServletException.class)
                 .hasMessageContaining("Request can't be handled, some patient data are missing or don't have the required format");
     }
+
 }

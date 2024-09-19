@@ -1,7 +1,7 @@
-package com.medilabo.diagnosis.configuration;
+package com.medilabo.diagnosis_patients.configuration;
 
-import com.medilabo.diagnosis.model.Patient;
-import com.medilabo.diagnosis.repository.PatientRepository;
+import com.medilabo.diagnosis_patients.model.Patient;
+import com.medilabo.diagnosis_patients.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,8 +1,8 @@
-package com.medilabo.diagnosis;
+package com.medilabo.diagnosis_patients;
 
-import com.medilabo.diagnosis.model.Patient;
-import com.medilabo.diagnosis.repository.PatientRepository;
-import com.medilabo.diagnosis.service.PatientService;
+import com.medilabo.diagnosis_patients.model.Patient;
+import com.medilabo.diagnosis_patients.repository.PatientRepository;
+import com.medilabo.diagnosis_patients.service.PatientService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,12 +21,15 @@ import static org.mockito.Mockito.when;
 /**
  * This test class uses a H2 Database
  * and is initialized by H2DataInitializer bean
+ *
  * @see H2DataInitializer
  */
 @SpringBootTest
 public class PatientServiceTests {
+
     @Autowired
     private PatientService patientService;
+
     @Mock
     private PatientRepository patientRepository;
 

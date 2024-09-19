@@ -1,8 +1,8 @@
-package com.medilabo.diagnosis.controller;
+package com.medilabo.diagnosis_patients.controller;
 
 
-import com.medilabo.diagnosis.model.Patient;
-import com.medilabo.diagnosis.service.PatientService;
+import com.medilabo.diagnosis_patients.model.Patient;
+import com.medilabo.diagnosis_patients.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletException;
@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/patient") //defines a base URI for all the endpoints within the controller.
+@RequestMapping("/patients")
 @Tag(name = "DiagnosisController", description = "Gestion des patients")
 public class PatientController {
+
     private static final Logger logger = LogManager.getLogger("PatientController");
+
     @Autowired
     private PatientService patientService;
 
@@ -58,4 +60,5 @@ public class PatientController {
                 patientService.updatePatient(patientToUpdate);
             }
     }
+
 }

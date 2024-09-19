@@ -1,4 +1,4 @@
-package com.medilabo.diagnosis;
+package com.medilabo.diagnosis_patients;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

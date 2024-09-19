@@ -1,4 +1,4 @@
-package com.medilabo.diagnosis.configuration;
+package com.medilabo.diagnosis_patients.configuration;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

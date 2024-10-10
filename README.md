@@ -7,7 +7,7 @@ DIAGNOSIS est une application d'aide à la détection du diabète de type 2 comp
 Le microservice utilise une base SQL pour la persistence des données.
 
 ### Port
-Le microservice PATIENT est exposé sur le port 8081
+Le microservice PATIENT est exposé sur le port 8081.
 
 ### Docker
 

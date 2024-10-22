@@ -41,16 +41,6 @@ public class JwtUtil {
         return claims;
     }
 
-    public String extractUsername(String token) {
-        Claims claims = extractClaims(token);
-        return claims.getSubject();
-    }
-
-    public String extractAuthorities(String token) {
-        Claims claims = extractClaims(token);
-        return claims.getSubject();
-    }
-
     public boolean isTokenExpired(String token) {
         Claims claims = extractClaims(token);
         return claims.getExpiration().after(Date.from(Instant.now()));

@@ -22,11 +22,11 @@ public class SpringSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         /**
-                         * Regles d'authentification : accès à l'appli
+                         * Regles d'authentification : accès au microservice
                          */
                         .anyRequest().authenticated()
                 )
-                //UsernamePasswordAuthenticationFilter est le filtre par defaut de spring security.
+                //UsernamePasswordAuthenticationFilter est le filtre par defaut de Spring Security.
                 .addFilterBefore(jwtAuthenticationWebFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

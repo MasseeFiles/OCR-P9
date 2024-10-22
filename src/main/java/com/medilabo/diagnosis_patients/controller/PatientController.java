@@ -3,8 +3,6 @@ package com.medilabo.diagnosis_patients.controller;
 
 import com.medilabo.diagnosis_patients.model.Patient;
 import com.medilabo.diagnosis_patients.service.PatientService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletException;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/patients")
-@Tag(name = "DiagnosisController", description = "Gestion des patients")
 public class PatientController {
 
     private static final Logger logger = LogManager.getLogger("PatientController");
@@ -26,7 +23,6 @@ public class PatientController {
     private PatientService patientService;
 
     @GetMapping("")
-    @Operation(summary = "Recuperation des données de tous les patients", description = "Retourne une List<Patient>")
     public List<Patient> getAllPatient() {
 
         logger.info("Requete pour obtenir la liste de tous les patients");
@@ -36,7 +32,6 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Recuperation des données d'un patient particulier", description = "Retourne un objet Patient")
     public Patient getSinglePatient(@PathVariable("id") Long patientId) {
 
         logger.info("Requete pour obtenir les données d'un patient particulier");
@@ -45,20 +40,19 @@ public class PatientController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Mise à jour des donnees d'un patient", description = "Persiste en base les données actualisées d'un patient")
     public void updatePatient(
             @PathVariable("id") Long id,
             @RequestBody @Valid Patient patientToUpdate,
             BindingResult result
-            ) throws Exception {
+    ) throws Exception {
 
         logger.info("Requete pour la persistence des informations d'un patient");
 
-            if (result.hasErrors()) {
-                throw new ServletException("Request can't be handled, some patient data are missing or don't have the required format");
-            } else {
-                patientService.updatePatient(patientToUpdate);
-            }
+        if (result.hasErrors()) {
+            throw new ServletException("Request can't be handled, some patient data are missing or don't have the required format");
+        } else {
+            patientService.updatePatient(patientToUpdate);
+        }
     }
 
 }
